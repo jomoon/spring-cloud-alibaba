@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.scheduler.Schedulers;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -47,6 +48,9 @@ public class SidecarHealthChecker {
 
 	private final ConfigurableEnvironment environment;
 
+	@Value("${server.port:8080}")
+	private Integer port;
+
 	public SidecarHealthChecker(SidecarDiscoveryClient sidecarDiscoveryClient,
 			HealthIndicator healthIndicator, SidecarProperties sidecarProperties,
 			ConfigurableEnvironment environment) {
@@ -60,7 +64,7 @@ public class SidecarHealthChecker {
 		Schedulers.single().schedulePeriodically(() -> {
 			String applicationName = environment.getProperty("spring.application.name");
 			String ip = sidecarProperties.getIp();
-			Integer port = sidecarProperties.getPort();
+			// Integer port = sidecarProperties.getPort();
 
 			Status status = healthIndicator.health().getStatus();
 

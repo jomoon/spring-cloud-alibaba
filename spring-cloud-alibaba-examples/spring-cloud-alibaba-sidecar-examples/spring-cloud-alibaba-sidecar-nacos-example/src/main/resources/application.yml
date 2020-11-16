@@ -1,29 +1,28 @@
 server:
-  port: 8070
+  port: 8088
+# 配置异构服务
+sidecar:
+  ip: ${IP:localhost}
+  port: ${PORT:8089}
+  health-check-url: ${HEALTH_CHECK_URL:http://${sidecar.ip}:${sidecar.port}/health}
 spring:
+  application:
+    name: ${APPLICATION_NAME:micro-sidecar}
   cloud:
     nacos:
-      username: nacos
-      password: nacos
       discovery:
-        server-addr: 127.0.0.1:8848
-        group: test
+        server-addr: ${NACOS_HOST:http://localhost}:${NACOS_PORT:38848}
+        #        拓展标签信息
+        metadata:
+          author: ${AUTHOR:}
+          version: ${VERSION:1.0}
+        namespace: ${ACTIVE_ENV:dev}
     gateway:
+      routes:
+        - id: main-route
+          uri: http://${sidecar.ip}:${sidecar.port}
+          predicates:
+            - Header=XXX-Origin, .*
       discovery:
         locator:
           enabled: true
-
-  application:
-    name: node-service
-sidecar:
-  # 异构微服务的IP
-  ip: 127.0.0.1
-  # 异构微服务的端口
-  port: 8060
-
-  # 异构微服务的健康检查URL
-  #health-check-url: http://localhost:8060/health.json
-management:
-  endpoint:
-    health:
-      show-details: always

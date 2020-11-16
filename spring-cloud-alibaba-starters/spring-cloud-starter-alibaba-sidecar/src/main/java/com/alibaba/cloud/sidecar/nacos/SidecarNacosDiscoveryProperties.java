@@ -19,6 +19,7 @@ package com.alibaba.cloud.sidecar.nacos;
 import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
 import com.alibaba.cloud.sidecar.SidecarProperties;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 
 /**
@@ -27,6 +28,9 @@ import org.springframework.util.StringUtils;
 public class SidecarNacosDiscoveryProperties extends NacosDiscoveryProperties {
 
 	SidecarProperties sidecarProperties;
+
+	@Value("${server.port:8080}")
+	private Integer sidecarPort;
 
 	public SidecarNacosDiscoveryProperties(SidecarProperties sidecarProperties) {
 		this.sidecarProperties = sidecarProperties;
@@ -41,8 +45,8 @@ public class SidecarNacosDiscoveryProperties extends NacosDiscoveryProperties {
 			this.setIp(ip);
 		}
 
-		Integer port = sidecarProperties.getPort();
-		this.setPort(port);
+		// Integer port = sidecarProperties.getPort();
+		this.setPort(sidecarPort);
 	}
 
 }
