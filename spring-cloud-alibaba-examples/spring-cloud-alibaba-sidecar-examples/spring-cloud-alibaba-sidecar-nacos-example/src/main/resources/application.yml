@@ -22,7 +22,7 @@ spring:
         - id: main-route
           uri: http://${sidecar.ip}:${sidecar.port}
           predicates:
-            - Header=XXX-Origin, .*
+            - Ip=*
       discovery:
         locator:
           enabled: true

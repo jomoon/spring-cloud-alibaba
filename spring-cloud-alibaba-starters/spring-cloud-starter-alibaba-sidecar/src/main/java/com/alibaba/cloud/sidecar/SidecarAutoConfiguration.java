@@ -16,9 +16,6 @@
 
 package com.alibaba.cloud.sidecar;
 
-import com.alibaba.cloud.sidecar.nacos.SidecarNacosHeaderGlobalFilter;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -54,17 +51,6 @@ public class SidecarAutoConfiguration {
 				sidecarHealthIndicator, sidecarProperties, environment);
 		cleaner.check();
 		return cleaner;
-	}
-
-	@Value("${sidecar.ip}")
-	private String sidecarIp;
-
-	@Value("${server.port:8080}")
-	private Integer port;
-
-	@Bean
-	public SidecarNacosHeaderGlobalFilter headerGlobalFilter() {
-		return new SidecarNacosHeaderGlobalFilter(sidecarIp, port);
 	}
 
 }
